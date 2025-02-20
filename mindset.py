@@ -50,8 +50,15 @@ progress = st.radio("How far along are you?", progress_options, index=0)
 st.subheader("✍️ Reflection Journal")
 reflection = st.text_area("Write about your experience today:")
 
+# Initialize session state for progress tracking
+if "progress_data" not in st.session_state:
+    st.session_state.progress_data = {"Not Started": 0, "In Progress": 0, "Completed": 0}
+
 # Save Progress
 if st.button("💾 Save Progress"):
+    st.session_state.progress_data[progress] += 1  # Update progress counts
+
+    # Save data to DataFrame
     data = pd.DataFrame({
         "Name": [name if name else "Anonymous"],
         "Date": [current_date],
@@ -59,6 +66,7 @@ if st.button("💾 Save Progress"):
         "Progress": [progress],
         "Reflection": [reflection if reflection else "No reflection provided."]
     })
+    
     st.success("✅ Your progress has been saved! Keep growing!")
     st.dataframe(data)
 
@@ -73,12 +81,14 @@ if st.button("💾 Save Progress"):
 
 # Clear Progress Button
 if st.button("🗑 Clear Progress"):
+    st.session_state.progress_data = {"Not Started": 0, "In Progress": 0, "Completed": 0}
     st.warning("Progress cleared! Start fresh.")
 
-# Progress Visualization
+# Progress Visualization (Dynamic)
 st.subheader("📈 Growth Mindset Progress Chart")
 progress_chart_data = pd.DataFrame(
-    {"Stage": ["Not Started", "In Progress", "Completed"], "Count": [2, 4, 6]}
+    {"Stage": list(st.session_state.progress_data.keys()), 
+     "Count": list(st.session_state.progress_data.values())}
 )
 st.bar_chart(progress_chart_data)
 

@@ -11,7 +11,7 @@ st.write("Welcome! Track your progress and embrace challenges with a growth mind
 # Sidebar for user details
 st.sidebar.header("👤 Your Profile")
 name = st.sidebar.text_input("Enter your name:")
-current_date = datetime.today().strftime('%Y-%m-%d')
+current_date = datetime.now().strftime('%Y-%m-%d')
 
 # Motivational Quote Section
 quotes = [
@@ -19,7 +19,9 @@ quotes = [
     "“Failure is success in progress.” – Albert Einstein",
     "“The only way to do great work is to love what you do.” – Steve Jobs",
     "“Don’t let what you cannot do interfere with what you can do.” – John Wooden",
-    "“Challenges are what make life interesting. Overcoming them is what makes life meaningful.”"
+    "“Challenges are what make life interesting. Overcoming them is what makes life meaningful.”",
+    "“Believe you can and you’re halfway there.” – Theodore Roosevelt",
+    "“Hardships often prepare ordinary people for an extraordinary destiny.” – C.S. Lewis",
 ]
 st.sidebar.write("💡 **Motivational Quote:**")
 st.sidebar.write(f"📢 *{random.choice(quotes)}*")
@@ -33,7 +35,9 @@ challenge_list = [
     "Ask for constructive feedback and act on it.",
     "Teach someone else a concept you're mastering.",
     "Turn a negative thought into a positive one!",
-    "Practice gratitude by writing three things you’re grateful for."
+    "Practice gratitude by writing three things you’re grateful for.",
+    "Spend 15 minutes meditating or reflecting on your goals.",
+    "Challenge yourself to avoid distractions and focus on deep work.",
 ]
 selected_challenge = st.selectbox("Choose a challenge to focus on today:", challenge_list)
 
@@ -46,7 +50,7 @@ progress = st.radio("How far along are you?", progress_options, index=0)
 st.subheader("✍️ Reflection Journal")
 reflection = st.text_area("Write about your experience today:")
 
-# Save Progress (Simulated Data Saving)
+# Save Progress
 if st.button("💾 Save Progress"):
     data = pd.DataFrame({
         "Name": [name if name else "Anonymous"],
@@ -67,13 +71,16 @@ if st.button("💾 Save Progress"):
         mime="text/csv",
     )
 
+# Clear Progress Button
+if st.button("🗑 Clear Progress"):
+    st.warning("Progress cleared! Start fresh.")
+
 # Progress Visualization
 st.subheader("📈 Growth Mindset Progress Chart")
 progress_chart_data = pd.DataFrame(
     {"Stage": ["Not Started", "In Progress", "Completed"], "Count": [2, 4, 6]}
 )
 st.bar_chart(progress_chart_data)
-
 
 # Dark Mode Toggle
 dark_mode = st.sidebar.checkbox("🌙 Enable Dark Mode")
